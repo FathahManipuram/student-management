@@ -6,3 +6,66 @@ generator client{
 datasource db{
 	provider="mysql"
 }
+
+
+enum UserRole{
+	ADMIN
+	STUDENT
+	TEACHER
+}
+
+model User {
+	id Int @id @default(autoincrement())
+	email String @unique @db.VarChar(191)
+	password String @db.VarChar(255)
+	role UserRole @default(STUDENT)
+	student Student?
+	teacher Teacher?
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+}
+
+
+model Student {
+	id Int @id @default(autoincrement())
+	userId Int @unique
+	admissionNumber String @unique @db.VarChar(50)
+
+	firstName String @db.VarChar(100)
+	lastName String @db.VarChar(100)
+
+	dateOfBirth DateTime? @db.DateTime
+	gender String? @db.VarChar(20)
+	phone String? @db.VarChar(20)
+	address String? @db.Text
+
+	admissionDate DateTime @default(now())
+
+	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([lastName, firstName])
+}
+
+
+model Teacher{
+	id Int @id @default(autoincrement())
+	userId Int @unique
+	employeeNumber String @unique @db.VarChar(50)
+
+	firstName String @db.VarChar(100)
+	lastName String @db.VarChar(100)
+
+	department String? @db.VarChar(100)
+	phone String? @db.VarChar(20)
+	hireDate DateTime @default(now())
+
+	user User @relation(fields:[userId], references: [id], onDelete: Cascade)
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([lastName, firstName])
+}
