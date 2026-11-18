@@ -17,7 +17,7 @@ enum UserRole{
 model User {
 	id Int @id @default(autoincrement())
 	email String @unique @db.VarChar(191)
-	password String @db.VarChar(255)
+	passwordHash String @db.VarChar(255)
 	role UserRole @default(STUDENT)
 	student Student?
 	teacher Teacher?
@@ -34,7 +34,7 @@ model Student {
 	firstName String @db.VarChar(100)
 	lastName String @db.VarChar(100)
 
-	dateOfBirth DateTime? @db.DateTime
+	dateOfBirth DateTime? @db.Date
 	gender String? @db.VarChar(20)
 	phone String? @db.VarChar(20)
 	address String? @db.Text
@@ -121,7 +121,7 @@ model Grade{
 	id Int @id @default(autoincrement())
 
 	enrollmentId Int
-	assesmentName String @db.VarChar(100)
+	assessmentName String @db.VarChar(100)
 
 	score Decimal @db.Decimal(5,2)
 	maxScore Decimal @default(100) @db.Decimal(5,2)
@@ -133,6 +133,6 @@ model Grade{
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
 
-	@@unique([enrollmentId, assesmentName])
+	@@unique([enrollmentId, assessmentName])
 	@@index([enrollmentId])
 }
