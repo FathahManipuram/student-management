@@ -42,6 +42,7 @@ model Student {
 	admissionDate DateTime @default(now())
 
 	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+	enrollments Enrollment[]
 
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
@@ -63,9 +64,75 @@ model Teacher{
 	hireDate DateTime @default(now())
 
 	user User @relation(fields:[userId], references: [id], onDelete: Cascade)
+	courses Course[]
 
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
 
 	@@index([lastName, firstName])
+}
+
+
+model Course{
+	id Int @id @default(autoincrement())
+	courseCode String @unique @db.VarChar(50)
+	courseName String @db.VarChar(150)
+	description String? @db.Text
+	credits Int @default(3)
+
+	teacherId Int
+	teacher Teacher @relation(fields:[teacherId], references:[id], onDelete: Restrict)
+	enrollments Enrollment[]
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([teacherId])
+}
+
+model Enrollment{
+	id Int @id @default(autoincrement())
+
+	studentId Int
+	courseId Int
+
+	student Student @relation(fields:[studentId], references:[id], onDelete: Cascade)
+	course Course @relation(fields:[courseId], references:[id], onDelete: Restrict)
+
+	enrolledAt DateTime @default(now())
+	status EnrollmentStatus @default(ACTIVE)
+
+	grades Grade[]
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@unique([studentId, courseId])
+	@@index([courseId])
+}
+
+enum EnrollmentStatus{
+	ACTIVE
+	COMPLETED
+	DROPPED
+}
+
+
+model Grade{
+	id Int @id @default(autoincrement())
+
+	enrollmentId Int
+	assesmentName String @db.VarChar(100)
+
+	score Decimal @db.Decimal(5,2)
+	maxScore Decimal @default(100) @db.Decimal(5,2)
+
+	remarks String? @db.Text
+
+	enrollment Enrollment @relation(fields:[enrollmentId], references: [id], onDelete: Cascade)
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@unique([enrollmentId, assesmentName])
+	@@index([enrollmentId])
 }
