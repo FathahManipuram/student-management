@@ -1,6 +1,8 @@
 import express from "express"
 import { errorHandler } from "./middlewares/errorHandler.js"
 import { requestLogger } from "./middlewares/requestLogger.js"
+import { createStudentRoutes } from "./modules/students/routes/StudentRoutes.js"
+import { container } from "./di/container.js"
 
 const app= express()
 
@@ -17,6 +19,8 @@ app.get("/api/health", (_req, res)=>{
 	})
 })
 
+
+app.use("/api/students", createStudentRoutes(container.studentController))
 
 app.use(errorHandler)
 export {app}
