@@ -63,14 +63,3 @@ export class Teacher extends User{
 	}
 }
 
-
-const teacher= new Teacher(
-	1,
-	"teacher@gmail.com",
-	"EM01",
-	"Fathima",
-	"Ayisha",
-	"IT" 
-)
-
-console.log(teacher)
