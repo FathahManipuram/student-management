@@ -5,7 +5,7 @@ export interface ICourseRepository{
 
 	findById(id: number): Promise<Course | null>
 
-	create(ourse: Course): Promise<Course>
+	create(course: Course): Promise<Course>
 
 	update(
 		id: number,

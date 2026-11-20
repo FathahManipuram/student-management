@@ -16,6 +16,10 @@ export class Enrollment{
 		return this._status
 	}
 
+	set status(value: EnrollmentStatus){
+		this._status= value
+	}
+
 	activate (): void{
 		this._status= "ACTIVE"
 	}

@@ -7,7 +7,7 @@ export interface IEnrollmentRepository {
 
 	findByStudentId(studentId: number): Promise<Enrollment[]>
 
-	create(Enrollment: Enrollment): Promise<Enrollment>
+	create(enrollment: Enrollment): Promise<Enrollment>
 
 	update(
 		id: number,
