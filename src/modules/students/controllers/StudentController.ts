@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { StudentService } from "../services/StudentService.js";
 import { toStudentResponse } from "../dto/student.response.js";
+import { validateCreateStudent } from "../validators/student.validator.js";
 
 export class StudentController{
 	constructor(
@@ -41,7 +42,9 @@ export class StudentController{
 	}
 
 	createStudent: RequestHandler= async(req, res)=>{
-		const student= await this.studentService.createStudent(req.body)
+
+		const input= validateCreateStudent(req.body)
+		const student= await this.studentService.createStudent(input)
 
 		res.status(201).json({
 			success: true,
