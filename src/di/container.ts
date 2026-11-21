@@ -4,6 +4,7 @@ import { CourseService } from "../modules/courses/services/CourseService.js";
 import { EnrollmentController } from "../modules/enrollments/controllers/Enrollment.controller.js";
 import { EnrollmentRepository } from "../modules/enrollments/repositories/EnrollmentRepository.js";
 import { EnrollmentService } from "../modules/enrollments/services/EnrollmentService.js";
+import { GradeController } from "../modules/grades/controllers/grade.controller.js";
 import { GradeRepository } from "../modules/grades/repositories/GradeRepository.js";
 import { GradeService } from "../modules/grades/services/GradeServices.js";
 import { StudentController } from "../modules/students/controllers/StudentController.js";
@@ -31,13 +32,14 @@ const enrollmentService=new EnrollmentService(
 )
 const gradeService = new GradeService(
     gradeRepository,
-    enrollmentRepository
+    //enrollmentRepository
 )
 
 const studentController= new StudentController(studentService)
 const teacherController = new TeacherController(teacherService);
 const courseController= new CourseController(courseService)
 const enrollmentController= new EnrollmentController(enrollmentService)
+const gradeController= new GradeController(gradeService)
 
 
 export const container={
@@ -59,5 +61,6 @@ export const container={
 	teacherController,
 	courseController,
 	enrollmentController,
+	gradeController
 
 }

@@ -13,7 +13,7 @@ export class GradeRepository implements IGradeRepository{
 	}
 
 	async findByEnrollmentId(enrollmentId: number): Promise<Grade[]> {
-		return this.grades.filter(grade=> grade.enrollmentId==enrollmentId)
+		return this.grades.filter(grade=> grade.enrollmentId===enrollmentId)
 	}
 
 	async create(grade: Grade): Promise<Grade> {
