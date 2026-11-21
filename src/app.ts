@@ -4,7 +4,8 @@ import { requestLogger } from "./middlewares/requestLogger.js"
 import { createStudentRoutes } from "./modules/students/routes/StudentRoutes.js"
 import { container } from "./di/container.js"
 import { createTeacherRoutes } from "./modules/teachers/routes/teacherRoutes.js"
-import { createCourseRoutes } from "./modules/courses/controllers/routes/CourseRoutes.js"
+import { createCourseRoutes } from "./modules/courses/routes/CourseRoutes.js"
+import { createEnrolllmentRoutes } from "./modules/enrollments/routes/enrollment.routes.js"
 
 const app= express()
 
@@ -25,6 +26,7 @@ app.get("/api/health", (_req, res)=>{
 app.use("/api/students", createStudentRoutes(container.studentController))
 app.use("/api/teachers", createTeacherRoutes(container.teacherController));
 app.use("/api/courses", createCourseRoutes(container.courseController))
+app.use("/api/enrollments", createEnrolllmentRoutes(container.enrollmentController))
 
 app.use(errorHandler)
 export {app}

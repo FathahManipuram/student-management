@@ -24,4 +24,3 @@ add2(10,20)
 
 let xy: unknown = "hello"
 
-console.log(((xy as unknown) as number).length)

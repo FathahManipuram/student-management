@@ -15,6 +15,8 @@ export class EnrollmentService {
         return this.enrollmentRepository.findAll();
     }
 
+    
+
     async createEnrollment(
         studentId: number,
         courseId: number
