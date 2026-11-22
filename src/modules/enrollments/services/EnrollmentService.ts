@@ -40,11 +40,9 @@ export class EnrollmentService {
             throw new AppError("Student is already enrolled in this course", 409);
         }
 
-        const nextId = existingEnrollments.reduce(
-            (max, enrollment) => Math.max(max, enrollment.id), 0
-        ) + 1;
+      
 
-        const enrollment = new Enrollment(nextId, studentId, courseId);
+        const enrollment = new Enrollment(0, studentId, courseId);
         return this.enrollmentRepository.create(enrollment);
     }
 

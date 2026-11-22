@@ -1,3 +1,6 @@
+// Prisma
+
+
 import { PrismaClient } from "../generated/prisma/client.js";
 import { AppError } from "../shared/errors/AppError.js";
 import { env } from "./env.js";

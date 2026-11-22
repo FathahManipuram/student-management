@@ -37,12 +37,10 @@ export class CourseService{
             throw new AppError("Course code already exists", 409);
         }
 
-        const nextId = courses.reduce(
-            (max, course) => Math.max(max, course.id), 0
-        ) + 1;
+       
 
         const course = new Course(
-            nextId,
+            0,
             code,
             data.courseName,
             data.credits,

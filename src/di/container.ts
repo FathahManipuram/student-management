@@ -32,7 +32,7 @@ const enrollmentService=new EnrollmentService(
 )
 const gradeService = new GradeService(
     gradeRepository,
-    //enrollmentRepository
+    enrollmentRepository
 )
 
 const studentController= new StudentController(studentService)
