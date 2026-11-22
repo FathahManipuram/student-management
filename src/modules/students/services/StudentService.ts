@@ -49,10 +49,10 @@ export class StudentService{
 			throw new AppError("Admission number already exists", 409)
 		}
 
-		const nextId= student.reduce((maximumId, student)=> Math.max(maximumId, student.id) ,0)+1
+		//const nextId= student.reduce((maximumId, student)=> Math.max(maximumId, student.id) ,0)+1
 
 		const newStudent= new Student(
-			nextId,
+			0,
 			email,
 			admissionNumber,
 			data.firstName,

@@ -38,12 +38,9 @@ export class TeacherService{
             throw new AppError("Employee number already exists", 409);
         }
 
-        const nextId = teachers.reduce(
-            (max, teacher) => Math.max(max, teacher.id), 0
-        ) + 1;
 
         const teacher = new Teacher(
-            nextId,
+            0,
             data.email,
             data.employeeNumber,
             data.firstName,
