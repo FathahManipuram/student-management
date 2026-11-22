@@ -1,17 +1,17 @@
 import { Grade } from "../Grade.js";
 import { IGradeRepository } from "../interfaces/IGradeRepository.js";
-//import { IEnrollmentRepository } from "../../enrollments/interfaces/IEnrollmentRepository.js";
+import { IEnrollmentRepository } from "../../enrollments/interfaces/IEnrollmentRepository.js";
 import { AppError } from "../../../shared/errors/AppError.js";
 
 export class GradeService {
     constructor(
         private readonly gradeRepository: IGradeRepository,
-        //private readonly enrollmentRepository: IEnrollmentRepository
+        private readonly enrollmentRepository: IEnrollmentRepository
     ) {}
 
     async getGradesByEnrollment(enrollmentId: number): Promise<Grade[]> {
-        // const enrollment = await this.enrollmentRepository.findById(enrollmentId);
-        // if (!enrollment) throw new AppError("Enrollment not found", 404);
+        const enrollment = await this.enrollmentRepository.findById(enrollmentId);
+        if (!enrollment) throw new AppError("Enrollment not found", 404);
 
         return this.gradeRepository.findByEnrollmentId(enrollmentId);
     }
@@ -22,17 +22,12 @@ export class GradeService {
         score: number,
         maxScore: number
     ): Promise<Grade> {
-        // const enrollment = await this.enrollmentRepository.findById(enrollmentId);
-        // if (!enrollment) throw new AppError("Enrollment not found", 404);
+        const enrollment = await this.enrollmentRepository.findById(enrollmentId);
+        if (!enrollment) throw new AppError("Enrollment not found", 404);
 
-        const grades = await this.gradeRepository.findAll();
-
-        const nextId = grades.reduce(
-            (max, grade) => Math.max(max, grade.id), 0
-        ) + 1;
 
         const grade = new Grade(
-            nextId,
+            0,
             enrollmentId,
             assessmentName,
             score,
