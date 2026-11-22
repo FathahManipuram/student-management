@@ -1,0 +1,138 @@
+generator client{
+	provider ="prisma-client"
+	output = "../src/generated/prisma"
+}
+
+datasource db{
+	provider="mysql"
+}
+
+
+enum UserRole{
+	ADMIN
+	STUDENT
+	TEACHER
+}
+
+model User {
+	id Int @id @default(autoincrement())
+	email String @unique @db.VarChar(191)
+	passwordHash String @db.VarChar(255)
+	role UserRole @default(STUDENT)
+	student Student?
+	teacher Teacher?
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+}
+
+
+model Student {
+	id Int @id @default(autoincrement())
+	userId Int @unique
+	admissionNumber String @unique @db.VarChar(50)
+
+	firstName String @db.VarChar(100)
+	lastName String @db.VarChar(100)
+
+	dateOfBirth DateTime? @db.Date
+	gender String? @db.VarChar(20)
+	phone String? @db.VarChar(20)
+	address String? @db.Text
+
+	admissionDate DateTime @default(now())
+
+	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+	enrollments Enrollment[]
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([lastName, firstName])
+}
+
+
+model Teacher{
+	id Int @id @default(autoincrement())
+	userId Int @unique
+	employeeNumber String @unique @db.VarChar(50)
+
+	firstName String @db.VarChar(100)
+	lastName String @db.VarChar(100)
+
+	department String? @db.VarChar(100)
+	phone String? @db.VarChar(20)
+	hireDate DateTime @default(now())
+
+	user User @relation(fields:[userId], references: [id], onDelete: Cascade)
+	courses Course[]
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([lastName, firstName])
+}
+
+
+model Course{
+	id Int @id @default(autoincrement())
+	courseCode String @unique @db.VarChar(50)
+	courseName String @db.VarChar(150)
+	description String? @db.Text
+	credits Int @default(3)
+
+	teacherId Int
+	teacher Teacher @relation(fields:[teacherId], references:[id], onDelete: Restrict)
+	enrollments Enrollment[]
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([teacherId])
+}
+
+model Enrollment{
+	id Int @id @default(autoincrement())
+
+	studentId Int
+	courseId Int
+
+	student Student @relation(fields:[studentId], references:[id], onDelete: Cascade)
+	course Course @relation(fields:[courseId], references:[id], onDelete: Restrict)
+
+	enrolledAt DateTime @default(now())
+	status EnrollmentStatus @default(ACTIVE)
+
+	grades Grade[]
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@unique([studentId, courseId])
+	@@index([courseId])
+}
+
+enum EnrollmentStatus{
+	ACTIVE
+	COMPLETED
+	DROPPED
+}
+
+
+model Grade{
+	id Int @id @default(autoincrement())
+
+	enrollmentId Int
+	assessmentName String @db.VarChar(100)
+
+	score Decimal @db.Decimal(5,2)
+	maxScore Decimal @default(100) @db.Decimal(5,2)
+
+	remarks String? @db.Text
+
+	enrollment Enrollment @relation(fields:[enrollmentId], references: [id], onDelete: Cascade)
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@unique([enrollmentId, assessmentName])
+	@@index([enrollmentId])
+}
